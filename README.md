@@ -1,3 +1,67 @@
+# Docker Setup with SQL Server, Database Creation and Password Manager API
+## Prerequisites
+
+- Docker installed on your machine.
+- SQL Server tools (optional, for using `sqlcmd` from the host).
+
+## Step 1: Create a Dockerfile
+
+Create a `Dockerfile` in your project directory with the following content:
+
+```dockerfile
+# Use the official SQL Server 2019 image
+FROM mcr.microsoft.com/mssql/server:2019-latest
+
+# Set the environment variables for SQL Server
+ENV ACCEPT_EULA=Y
+ENV SA_PASSWORD=J@gadeesh7868 --yourp assword
+ENV MSSQL_PID=Developer
+
+# Expose the default SQL Server port
+EXPOSE 1433
+
+# Run SQL Server
+CMD /opt/mssql/bin/sqlservr
+
+## Step 2: Build the Docker Image
+
+In your terminal, navigate to the directory containing the Dockerfile and run:
+
+`docker build -t my-sql-server .`
+
+## step 3: Run the SQL Server Container
+
+Start the SQL Server container using the following command:
+
+`docker run -d -p 1433:1433 --name sql_server_container my-sql-server`
+
+## step 4: Create Database and Table
+
+Using sqlcmd from Host
+
+`sqlcmd -S localhost -U SA -P 'your@password'`
+
+# Create Database and Table
+
+`CREATE DATABASE PasswordManagerDB;
+GO`
+
+# Use Database
+
+`USE PasswordManagerDB;
+GO`
+
+# Create Table
+
+CREATE TABLE Passwords (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Category NVARCHAR(255) NOT NULL,
+    App NVARCHAR(255) NOT NULL,
+    UserName NVARCHAR(255) NOT NULL,
+    EncryptedPassword NVARCHAR(MAX) NOT NULL
+);
+GO
+
 # Password Manager API
 
 ## Overview
@@ -31,7 +95,7 @@ Make sure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/PasswordManagerAPI.git
+   git clone https://github.com/JagadeeshGiribabu/PasswordManagerApi.git
    cd PasswordManagerAPI
 
 2. Restore dependencies:
